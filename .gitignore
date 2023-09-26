@@ -22,7 +22,6 @@ core
 tags
 .DS_Store
 .directory
-*.debug
 Makefile*
 *.prl
 *.app
@@ -68,7 +67,5 @@ CMakeLists.txt.user*
 *.pyc
 
 # Binaries
-# --------
-*.dll
-*.exe
+
 
