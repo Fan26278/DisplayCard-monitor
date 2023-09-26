@@ -2,16 +2,43 @@
 #include "ui_form.h"
 #include <nvml.h>
 #include<QTimer>
+
 Form::Form(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Form)
 {
+    setWindowFlags(Qt::Dialog | Qt::WindowStaysOnTopHint);
     ui->setupUi(this);
 
+    // 初始化NVML库
+    nvmlReturn_t result = nvmlInit();
+    if (result != NVML_SUCCESS)
+    {
+        return;
+    }
+
+    // 设置计时器
+    QTimer *timer = new QTimer(this);
+    connect(timer,&QTimer::timeout,this, &Form::updateGPUInfo);
+     timer->start(1000);
+
+
+}
+// 析构函数
+Form::~Form()
+{
+    delete ui;
+    nvmlReturn_t result = nvmlShutdown();
+    if (result != NVML_SUCCESS)
+    {
+        // 处理关闭失败的情况
+    }
+}
+
+void Form::updateGPUInfo(){
     nvmlDevice_t device;
     nvmlReturn_t result;
     unsigned int device_count, i;
-
 
     device_count = -1;
     // First initialize NVML library
@@ -31,29 +58,24 @@ Form::Form(QWidget *parent) :
     result = nvmlDeviceGetName(device, name, NVML_DEVICE_NAME_BUFFER_SIZE);
 
     // 设置标签为显卡名字
-    this->ui->nameLabel->setText(QString::fromLocal8Bit(name,512));
+    ui->nameLabel->setText(QString::fromLocal8Bit(name,512));
 
-    // 设置计时器
-    QTimer *timer = new QTimer(this);
+
     nvmlUtilization_t nvmUtil;
-    nvmlBAR1Memory_t memory;
+    nvmlMemory_t memory;
 
-    // connect(timer, &QTimer::timeout,this,
 
-        // 获得显卡使用率
-        nvmlDeviceGetUtilizationRates(device, &nvmUtil);
+    // 获得显卡使用率
+    nvmlDeviceGetUtilizationRates(device, &nvmUtil);
     // 设置文本为使用率
-    this->ui->ratesLabel->setText(QString::number(nvmUtil.gpu)+"%");
-    result = nvmlDeviceGetBAR1MemoryInfo(device, &memory);
-    QString usedMemory = QString::number((float)(memory.bar1Used)/1024.0f/1024.0f/1024.0f,'f',0)+"GB";
-    QString totalMemory =  QString::number((float)(memory.bar1Total)/1024.0f/1024.0f/1024.0f)+"GB";
-    this->ui->memoryLabel->setText(usedMemory+"/"+totalMemory);
-
-    // timer->start(1000);
+    ui->ratesLabel->setText(QString::number(nvmUtil.gpu)+"%");
+    // 获得显存使用率
+    result = nvmlDeviceGetMemoryInfo(device, &memory);
+    //
+    QString usedMemory = QString::number((float)(memory.used)/1024.0f/1024.0f/1024.0f,'f',2)+"GB";
+    QString totalMemory =  QString::number((float)(memory.total)/1024.0f/1024.0f/1024.0f)+"GB";
+    ui->memoryLabel->setText(usedMemory+"/"+totalMemory);
 
 
 }
-Form::~Form()
-{
-    delete ui;
-}
+

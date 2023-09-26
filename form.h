@@ -17,6 +17,8 @@ public:
 
 private:
     Ui::Form *ui;
-};
 
+public slots:
+    void updateGPUInfo();
+};
 #endif // FORM_H
