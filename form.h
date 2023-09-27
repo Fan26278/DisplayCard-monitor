@@ -1,8 +1,8 @@
 #ifndef FORM_H
 #define FORM_H
-
+#include <nvml.h>
 #include <QWidget>
-
+#include<QLabel>
 namespace Ui {
 class Form;
 }
@@ -18,7 +18,12 @@ public:
 private:
     Ui::Form *ui;
 
-public slots:
+    nvmlDevice_t device;
+    nvmlUtilization_t nvmUtil;
+    nvmlMemory_t memory;
+    nvmlReturn_t result ;
+
+private slots:
     void updateGPUInfo();
 };
 #endif // FORM_H

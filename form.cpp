@@ -11,11 +11,33 @@ Form::Form(QWidget *parent) :
     ui->setupUi(this);
 
     // 初始化NVML库
-    nvmlReturn_t result = nvmlInit();
+    result = nvmlInit();
     if (result != NVML_SUCCESS)
     {
         return;
     }
+
+    unsigned int device_count;
+
+    device_count = -1;
+    // First initialize NVML library
+    result = nvmlDeviceGetCount(&device_count);
+    // 获取设备数量
+    if(NVML_SUCCESS != result){
+
+    }
+
+    //获得设备操作句柄
+    nvmlDeviceGetHandleByIndex(0,&device);
+
+    // 获得名字
+    char name[NVML_DEVICE_NAME_BUFFER_SIZE];
+
+    result = nvmlDeviceGetName(device, name, NVML_DEVICE_NAME_BUFFER_SIZE);
+
+    // 设置标签为显卡名字
+    ui->nameLabel->setText(QString::fromLocal8Bit(name,512));
+
 
     // 设置计时器
     QTimer *timer = new QTimer(this);
@@ -35,34 +57,7 @@ Form::~Form()
     }
 }
 
-void Form::updateGPUInfo(){
-    nvmlDevice_t device;
-    nvmlReturn_t result;
-    unsigned int device_count, i;
-
-    device_count = -1;
-    // First initialize NVML library
-    result = nvmlInit();
-    result = nvmlDeviceGetCount(&device_count);
-    // 获取设备数量
-    if(NVML_SUCCESS != result){
-
-    }
-
-    //获得设备操作句柄
-    nvmlDeviceGetHandleByIndex(0,&device);
-
-    // 获得名字
-    char name[NVML_DEVICE_NAME_BUFFER_SIZE];
-
-    result = nvmlDeviceGetName(device, name, NVML_DEVICE_NAME_BUFFER_SIZE);
-
-    // 设置标签为显卡名字
-    ui->nameLabel->setText(QString::fromLocal8Bit(name,512));
-
-
-    nvmlUtilization_t nvmUtil;
-    nvmlMemory_t memory;
+ void Form::updateGPUInfo(){
 
 
     // 获得显卡使用率
