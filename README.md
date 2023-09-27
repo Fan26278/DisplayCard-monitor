@@ -4,27 +4,28 @@
 基于C++ QT框架实现对N卡的监控项目
 
 #### 软件架构
-软件架构说明
+本项目基于QT,有一个窗口,通过调用NVIDIA 提供的nvml接口 实现对N卡的性能监控
+目前功能
+1.GPU名称显示
+2.GPU利用率显示
+3.GPU显存占用情况
 
 
 #### 安装教程
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+1.  git clone https://gitee.com/fan26278/nvidiaCard-monitor.git
+2.  打开项目目录下的 relsease/HardwareMontior.exe 
+3.  即可运行
 
 #### 使用说明
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+1.  本项目目前支持N卡，A卡暂不支持
+2.  个人能力有限，初学C++和QT,遇到问题、建议欢迎随时提交Issues
+3.  喜欢或者帮助到你请点Star
 
 #### 参与贡献
 
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
+1.  Fan26278
 
 
 #### 特技
