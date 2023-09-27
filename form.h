@@ -14,7 +14,6 @@ class Form : public QWidget
 public:
     explicit Form(QWidget *parent = nullptr);
     ~Form();
-
 private:
     Ui::Form *ui;
 
@@ -22,7 +21,8 @@ private:
     nvmlUtilization_t nvmUtil;
     nvmlMemory_t memory;
     nvmlReturn_t result ;
-
+    void SetSysTrayIcon();
+    void ExitApplication();
 private slots:
     void updateGPUInfo();
 };

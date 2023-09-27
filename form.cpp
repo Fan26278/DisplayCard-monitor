@@ -2,13 +2,14 @@
 #include "ui_form.h"
 #include <nvml.h>
 #include<QTimer>
-
+#include<QSystemTrayIcon>
+#include<QMenu>
+#include<QAction>
 Form::Form(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Form)
 {
     ui->setupUi(this);
-
     // 初始化NVML库
     result = nvmlInit();
     if (result != NVML_SUCCESS)
@@ -16,18 +17,19 @@ Form::Form(QWidget *parent) :
         return;
     }
 
-    // 设置窗口透明化
-   this->setWindowFlags(Qt::FramelessWindowHint| Qt::WindowStaysOnTopHint);
-
-    // 设置字体透明化
+    // 设置主窗体去掉边框
+    this->setWindowFlags(Qt::FramelessWindowHint| Qt::WindowStaysOnTopHint|Qt::Tool);
+    // 设置控件透明化（0~1 0为透明，1为完全不透明）
     // this->setWindowOpacity(1);
+    // 设置窗体透明化
     this->setAttribute(Qt::WA_TranslucentBackground);
-    this->setStyleSheet("QWidget { color: #FFA500; font-weight: bold; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); }");
+    // this->setStyleSheet("QWidget { color: #FFA500; font-weight: bold;  }");
+
 
     unsigned int device_count;
 
     device_count = -1;
-    // First initialize NVML library
+
     result = nvmlDeviceGetCount(&device_count);
     // 获取设备数量
     if(NVML_SUCCESS != result){
@@ -44,12 +46,14 @@ Form::Form(QWidget *parent) :
 
     // 设置标签为显卡名字
     ui->nameLabel->setText(QString::fromLocal8Bit(name,512));
+    ui->nameLabel->adjustSize();
+    this->move(0,0);
 
-
+    SetSysTrayIcon();
     // 设置计时器
     QTimer *timer = new QTimer(this);
     connect(timer,&QTimer::timeout,this, &Form::updateGPUInfo);
-     timer->start(1000);
+    timer->start(1000);
 
 
 }
@@ -64,7 +68,7 @@ Form::~Form()
     }
 }
 
- void Form::updateGPUInfo(){
+void Form::updateGPUInfo(){
 
 
     // 获得显卡使用率
@@ -73,11 +77,35 @@ Form::~Form()
     ui->ratesLabel->setText(QString::number(nvmUtil.gpu)+"%");
     // 获得显存使用率
     result = nvmlDeviceGetMemoryInfo(device, &memory);
-    //
+
     QString usedMemory = QString::number((float)(memory.used)/1024.0f/1024.0f/1024.0f,'f',2)+"GB";
     QString totalMemory =  QString::number((float)(memory.total)/1024.0f/1024.0f/1024.0f)+"GB";
     ui->memoryLabel->setText(usedMemory+"/"+totalMemory);
 
-
+    this->adjustSize();
 }
+void Form::SetSysTrayIcon(){
 
+    QIcon icon ("lib/icon.jpg");
+    QSystemTrayIcon *sysTrayIcon = new QSystemTrayIcon(this);
+    sysTrayIcon->setIcon(icon);
+    sysTrayIcon->setToolTip("显卡监视");
+
+    // 设置右键菜单
+    QMenu *trayMenu = new QMenu(this); // 初始化右键菜单
+    // 按钮绑定事件
+    QAction *showAction = new QAction("显示窗口",this);
+    QAction *exitAction = new QAction("退出程序",this);
+    connect(showAction,&QAction::triggered,this,&Form::show);
+    connect(exitAction,&QAction::triggered,this,&Form::ExitApplication);
+
+    trayMenu->addAction(showAction);    //菜单添加按钮
+    trayMenu->addAction(exitAction);
+    sysTrayIcon->setContextMenu(trayMenu); //将菜单加入到系统托盘中
+
+
+    sysTrayIcon->show();
+}
+void Form::ExitApplication(){
+    qApp->exit();
+}
