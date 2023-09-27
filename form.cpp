@@ -7,7 +7,6 @@ Form::Form(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Form)
 {
-    setWindowFlags(Qt::Dialog | Qt::WindowStaysOnTopHint);
     ui->setupUi(this);
 
     // 初始化NVML库
@@ -16,6 +15,14 @@ Form::Form(QWidget *parent) :
     {
         return;
     }
+
+    // 设置窗口透明化
+   this->setWindowFlags(Qt::FramelessWindowHint| Qt::WindowStaysOnTopHint);
+
+    // 设置字体透明化
+    // this->setWindowOpacity(1);
+    this->setAttribute(Qt::WA_TranslucentBackground);
+    this->setStyleSheet("QWidget { color: #FFA500; font-weight: bold; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); }");
 
     unsigned int device_count;
 
