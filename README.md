@@ -13,8 +13,8 @@
 
 #### 安装教程
 
-1.  直接下载或者 `git clone https://gitee.com/fan26278/nvidiaCard-monitor.git `
-2.  打开项目目录下的 relsease/HardwareMontior.exe, 该文件夹包含了运行环境，可直接运行 
+1.  clone后打开`relsease/HardwareMontior.exe`即可运行该程序
+2.  打开后GPU信息实时显示到桌面左上角，**退出程序或关闭显示** 在右下角任务托盘找到该程序
 
 
 #### 使用说明

@@ -4,6 +4,7 @@
 #include <QWidget>
 #include<QLabel>
 #include<HardData.h>
+#include<QSystemTrayIcon>
 namespace Ui {
 class Form;
 }
@@ -19,10 +20,14 @@ private:
     Ui::Form *ui;
     QTimer *timer;
     HardData *displayCard;
+    QSystemTrayIcon *sysTrayIcon;
+    bool isShow;
+
     void SetSysTrayIcon();
     void ExitApplication();
     void ShowForm(bool checked);
     void InitPage();
+    void DragMode(bool checked);
 private slots:
     void updateGPUInfo();
 };
