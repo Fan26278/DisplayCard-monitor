@@ -96,7 +96,10 @@ void Form::SetSysTrayIcon(){
     // 按钮绑定事件
     QAction *showAction = new QAction("显示窗口",this);
     QAction *exitAction = new QAction("退出程序",this);
-    connect(showAction,&QAction::triggered,this,&Form::show);
+    showAction->setCheckable(true);
+    connect(showAction,&QAction::toggled,this,&Form::setVisible);
+
+
     connect(exitAction,&QAction::triggered,this,&Form::ExitApplication);
 
     trayMenu->addAction(showAction);    //菜单添加按钮

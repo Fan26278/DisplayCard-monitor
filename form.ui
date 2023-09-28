@@ -22,7 +22,8 @@
   <property name="styleSheet">
    <string notr="true">QLabel{
 font: 700 11pt &quot;Microsoft YaHei UI&quot;;
-color: rgb(0, 85, 0); font-weight: bold;  
+color: rgb(255, 193, 8);font-weight: bold;  
+	
 	
 },</string>
   </property>
