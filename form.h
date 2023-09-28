@@ -16,13 +16,14 @@ public:
     ~Form();
 private:
     Ui::Form *ui;
-
+    QTimer *timer;
     nvmlDevice_t device;
     nvmlUtilization_t nvmUtil;
     nvmlMemory_t memory;
     nvmlReturn_t result ;
     void SetSysTrayIcon();
     void ExitApplication();
+    void ShowForm(bool checked);
 private slots:
     void updateGPUInfo();
 };

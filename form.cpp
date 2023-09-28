@@ -51,7 +51,7 @@ Form::Form(QWidget *parent) :
 
     SetSysTrayIcon();
     // 设置计时器
-    QTimer *timer = new QTimer(this);
+    timer = new QTimer(this);
     connect(timer,&QTimer::timeout,this, &Form::updateGPUInfo);
     timer->start(1000);
 
@@ -84,6 +84,8 @@ void Form::updateGPUInfo(){
 
     this->adjustSize();
 }
+
+// 设置任务栏托盘函数
 void Form::SetSysTrayIcon(){
 
     QIcon icon ("lib/icon.jpg");
@@ -97,7 +99,8 @@ void Form::SetSysTrayIcon(){
     QAction *showAction = new QAction("显示窗口",this);
     QAction *exitAction = new QAction("退出程序",this);
     showAction->setCheckable(true);
-    connect(showAction,&QAction::toggled,this,&Form::setVisible);
+    showAction->setChecked(true);
+    connect(showAction,&QAction::toggled,this,&Form::ShowForm);
 
 
     connect(exitAction,&QAction::triggered,this,&Form::ExitApplication);
@@ -111,4 +114,20 @@ void Form::SetSysTrayIcon(){
 }
 void Form::ExitApplication(){
     qApp->exit();
+}
+void Form::ShowForm(bool checked){
+
+    if(checked){
+        // 显示窗口
+        this->setVisible(true);
+        // 计时器继续
+        timer->start();
+
+    }else{
+        // 窗口隐藏
+        this->setVisible(false);
+        // 计时器暂停
+        timer->stop();
+    }
+
 }
