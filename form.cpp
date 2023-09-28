@@ -97,6 +97,7 @@ void Form::ShowForm(bool checked){
         this->setVisible(false);
         // 计时器暂停
         timer->stop();
+        this->ui->memoryLabel->setText("-200");
     }
 
 }
