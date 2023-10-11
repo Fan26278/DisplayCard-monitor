@@ -22,7 +22,7 @@ private:
     HardData *displayCard;
     QSystemTrayIcon *sysTrayIcon;
     bool isShow;
-
+    QAction *showAction;
     void SetSysTrayIcon();
     void ExitApplication();
     void ShowForm(bool checked);

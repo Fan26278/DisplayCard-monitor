@@ -48,7 +48,7 @@ void Form::InitPage(){
 }
 void Form::updateGPUInfo(){
     // 设置显卡使用率
-    ui->ratesLabel->setText(QString::number(displayCard->GetDisplayCardUsage())+"%");
+  ui->ratesLabel->setText(QString::number(displayCard->GetDisplayCardUsage())+"%");
     // 获得显存使用情况
     QString usedMemory = QString::number((displayCard->GetDisplayCardMemoryUsed()),'f',2)+"GB";
     // 获得总显存
@@ -68,7 +68,7 @@ void Form::SetSysTrayIcon(){
     // 设置右键菜单
     QMenu *trayMenu = new QMenu(this); // 初始化右键菜单
     // 按钮绑定事件
-    QAction *showAction = new QAction("显示窗口",this);
+    showAction = new QAction("显示窗口",this);
     QAction *exitAction = new QAction("退出程序",this);
     QAction *dragModeAction = new QAction("拖拽模式",this);
 
@@ -79,8 +79,12 @@ void Form::SetSysTrayIcon(){
 
 
     connect(dragModeAction,&QAction::toggled,this,&Form::DragMode);
-    connect(showAction,&QAction::toggled,this,&Form::ShowForm);
 
+    // 拖拽模式启动后，退出隐藏模式（打开显示模式）
+   // connect(dragModeAction,&QAction,showAction,&QAction::);
+
+    connect(showAction,&QAction::toggled,this,&Form::ShowForm);
+  // emit showAction->toggled(true);
 
     connect(exitAction,&QAction::triggered,this,&Form::ExitApplication);
     trayMenu->addAction(dragModeAction);
@@ -130,5 +134,5 @@ void Form::DragMode(bool checked){
     // 设置新的窗口标志
     this->setWindowFlags(flags);
     this->show(); // 显示窗口（可能需要重新显示窗口）
-
+    emit showAction->toggled(true);
 }

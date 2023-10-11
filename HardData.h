@@ -7,6 +7,10 @@ class HardData{
     nvmlMemory_t memory;
     nvmlReturn_t result ;
     unsigned int device_count;
+    unsigned int * fanSpeed;
+    unsigned int * cardTemp;
+
+
 public:
     ~HardData(){
         nvmlShutdown();
@@ -23,6 +27,7 @@ public:
         }
 
     }
+
     int GetDisplayCardCount(){
         device_count = -1;
         result = nvmlDeviceGetCount(&device_count);
@@ -39,8 +44,10 @@ public:
     int GetDisplayCardUsage(){
         nvmlUtilization_t nvmUtil;
         // 获得显卡使用率
-        nvmlDeviceGetUtilizationRates(device, &nvmUtil);
-        return nvmUtil.gpu;
+       result =  nvmlDeviceGetUtilizationRates(device, &nvmUtil);
+
+            return nvmUtil.gpu;
+
     }
     // 获取总显存
     float GetDisplayCardMemoryTotal(){
@@ -50,9 +57,20 @@ public:
     // 获取已经用的显存
     float GetDisplayCardMemoryUsed(){
         result = nvmlDeviceGetMemoryInfo(device, &memory);
-//        return memory.used;
-   return (float)(memory.used)/1024.0f/1024.0f/1024.0f;
+        //        return memory.used;
+        return (float)(memory.used)/1024.0f/1024.0f/1024.0f;
     }
+
+    // 获取风扇转速
+    int GetFanSpeed(){
+        return nvmlDeviceGetFanSpeed(device,fanSpeed);
+    }
+
+     // 获取温度
+//    int GetCardTemp(){
+
+//      //  return nvmlDeviceGetTemperature(device,tmpSensor,cardTemp);
+//    }
 };
 
 #endif // HARDDATA_H
