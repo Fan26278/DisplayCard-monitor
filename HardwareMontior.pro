@@ -9,11 +9,13 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    fontstylefrm.cpp \
     form.cpp \
     main.cpp
 
 HEADERS += \
     HardData.h \
+    fontstylefrm.h \
     form.h
 
 # Default rules for deployment.
@@ -25,6 +27,7 @@ DISTFILES += \
     lib/nvml.lib
 
 FORMS += \
+    fontstylefrm.ui \
     form.ui
 
 

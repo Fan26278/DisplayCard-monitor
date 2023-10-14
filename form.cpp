@@ -24,6 +24,11 @@ Form::Form(QWidget *parent) :
     timer->start(1000);
 
 
+
+
+
+
+
 }
 // 析构函数
 Form::~Form()
@@ -47,6 +52,7 @@ void Form::InitPage(){
 
 }
 void Form::updateGPUInfo(){
+
     // 设置显卡使用率
   ui->ratesLabel->setText(QString::number(displayCard->GetDisplayCardUsage())+"%");
     // 获得显存使用情况
@@ -56,6 +62,7 @@ void Form::updateGPUInfo(){
     ui->memoryLabel->setText(usedMemory+"/"+totalMemory);
     this->adjustSize();
     this->show();
+
 }
 // 设置任务栏托盘函数
 void Form::SetSysTrayIcon(){

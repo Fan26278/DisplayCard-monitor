@@ -16,13 +16,20 @@ class Form : public QWidget
 public:
     explicit Form(QWidget *parent = nullptr);
     ~Form();
+
+    // 标签字体
+    QFont *labelFont;
 private:
     Ui::Form *ui;
+    // 获得数据计时器
     QTimer *timer;
     HardData *displayCard;
+    // 系统托盘
     QSystemTrayIcon *sysTrayIcon;
     bool isShow;
     QAction *showAction;
+
+
     void SetSysTrayIcon();
     void ExitApplication();
     void ShowForm(bool checked);
